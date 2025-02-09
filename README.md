@@ -104,6 +104,7 @@
 - 项目类型：小程序
 
 ## 代码结构
+```
 2048-notation/
 ├── pages/
 │   ├── game/
@@ -121,7 +122,7 @@
 ├── project.private.config.json
 ├── sitemap.json
 └── README.md
-
+```
 
 
 ### 核心文件说明
