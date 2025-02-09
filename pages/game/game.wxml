@@ -1,0 +1,91 @@
+<view class="container">
+  <view class="header">
+    <view class="score-container">
+      <text>分数</text>
+      <text class="score">{{score}}</text>
+    </view>
+    <view class="buttons">
+      <view class="auto-btn {{isAuto ? 'active' : ''}}" bindtap="toggleAuto">
+        {{isAuto ? '停止' : '自动'}}
+      </view>
+      <view class="undo-btn" bindtap="undoMove" wx:if="{{moveHistory.length > 0}}">
+        撤回
+      </view>
+      <view class="history-btn" bindtap="toggleHistoryView">
+        {{showHistory ? '关闭记录' : '查看记录'}}
+      </view>
+      <view class="restart-btn" bindtap="restartGame">重新开始</view>
+    </view>
+  </view>
+  
+  <!-- 移动记录区域到这里，在棋盘上方 -->
+  <view class="history-container" wx:if="{{showHistory}}">
+    <view class="history-header">
+      <text class="history-title">移动记录</text>
+    </view>
+    <scroll-view class="history-list" scroll-y scroll-into-view="move-{{moveHistory.length-1}}">
+      <view class="history-item" 
+            wx:for="{{moveHistory}}" 
+            wx:key="index"
+            id="move-{{index}}">
+        <text class="move-number">{{index + 1}}.</text>
+        <text class="move-detail">{{item.text}}</text>
+        <text class="move-score">+{{item.scoreGain}}</text>
+      </view>
+    </scroll-view>
+  </view>
+  
+  <view class="game-container">
+    <!-- 列坐标 -->
+    <view class="col-coordinates">
+      <view class="coordinate">1</view>
+      <view class="coordinate">2</view>
+      <view class="coordinate">3</view>
+      <view class="coordinate">4</view>
+    </view>
+    
+    <view class="board-with-row-coordinates">
+      <!-- 行坐标 -->
+      <view class="row-coordinates">
+        <view class="coordinate">A</view>
+        <view class="coordinate">B</view>
+        <view class="coordinate">C</view>
+        <view class="coordinate">D</view>
+      </view>
+      
+      <!-- 棋盘网格 -->
+      <view class="grid-container">
+        <view class="grid-row" wx:for="{{board}}" wx:for-item="row" wx:for-index="i" wx:key="i">
+          <view class="grid-cell cell-{{item.value}} {{item.isNew ? 'new-tile' : ''}} {{item.merged ? 'merged' : ''}} {{item.selected ? 'selected' : ''}}" 
+                wx:for="{{row}}" 
+                wx:key="j"
+                bindtap="selectTile"
+                data-row="{{i}}"
+                data-col="{{index}}">
+            <view>{{item.value !== 0 ? item.value : ''}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加方向键控制区 -->
+  <view class="direction-controls">
+    <view class="direction-row">
+      <view class="direction-btn" bindtap="handleDirection" data-direction="up">
+        <text class="direction-arrow">↑</text>
+      </view>
+    </view>
+    <view class="direction-row">
+      <view class="direction-btn" bindtap="handleDirection" data-direction="left">
+        <text class="direction-arrow">←</text>
+      </view>
+      <view class="direction-btn" bindtap="handleDirection" data-direction="down">
+        <text class="direction-arrow">↓</text>
+      </view>
+      <view class="direction-btn" bindtap="handleDirection" data-direction="right">
+        <text class="direction-arrow">→</text>
+      </view>
+    </view>
+  </view>
+</view> 
